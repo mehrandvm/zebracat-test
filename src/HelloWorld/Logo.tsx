@@ -1,34 +1,16 @@
 import {
-	AbsoluteFill,
+	AbsoluteFill, Img,
 	interpolate,
 	spring,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import {Arc} from './Arc';
-import {Atom} from './Atom';
+
+import logo from '../input_data/logo_zebra.png'
 
 export const Logo: React.FC = () => {
 	const videoConfig = useVideoConfig();
 	const frame = useCurrentFrame();
-
-	const development = spring({
-		config: {
-			damping: 100,
-			mass: 0.5,
-		},
-		fps: videoConfig.fps,
-		frame,
-	});
-
-	const rotationDevelopment = spring({
-		config: {
-			damping: 100,
-			mass: 0.5,
-		},
-		fps: videoConfig.fps,
-		frame,
-	});
 
 	const scale = spring({
 		frame,
@@ -50,22 +32,7 @@ export const Logo: React.FC = () => {
 				transform: `scale(${scale}) rotate(${logoRotation}deg)`,
 			}}
 		>
-			<Arc
-				rotateProgress={rotationDevelopment}
-				progress={development}
-				rotation={30}
-			/>
-			<Arc
-				rotateProgress={rotationDevelopment}
-				rotation={90}
-				progress={development}
-			/>
-			<Arc
-				rotateProgress={rotationDevelopment}
-				rotation={-30}
-				progress={development}
-			/>
-			<Atom scale={rotationDevelopment} />
+			<Img height={400} width={400} src={logo} alt="logo"/>
 		</AbsoluteFill>
 	);
 };
