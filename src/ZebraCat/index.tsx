@@ -63,7 +63,7 @@ export const ZebraCat: React.FC<Props> = (props) => {
 		extrapolateRight: 'clamp',
 	});
 
-	const opacity3 = interpolate(frame, [0, fps], [1, 0], {
+	const opacity3 = interpolate(frame, [15, fps], [1, 0], {
 		extrapolateLeft: 'clamp',
 		extrapolateRight: 'clamp',
 	});
@@ -76,10 +76,18 @@ export const ZebraCat: React.FC<Props> = (props) => {
 					startFrom={0} // If composition is 30fps, then it will start at 2s
 					endAt={durationInFrames} // If composition is 30fps, then it will end at 4s
 				/>
-				{[...Array(8).keys()].map((i) => (
-					<Sequence from={fps * i * 3 + fps} durationInFrames={fps * 3}>
+				<Sequence from={0} durationInFrames={fps * 4}>
+					<Video
+						src={require(`/src/input_data/footage/${props.footage[0]}`)}
+						startFrom={fps} // If the video is 30fps, then it will start at 2s
+						endAt={fps * 6} // If the video is 30fps, then it will end at 4s
+						volume={0}
+					/>
+				</Sequence>
+				{[...Array(7).keys()].map((i) => (
+					<Sequence from={fps * (i + 1) * 3 + fps} durationInFrames={fps * 3}>
 						<Video
-							src={require(`/src/input_data/footage/${props.footage[i]}`)}
+							src={require(`/src/input_data/footage/${props.footage[i + 1]}`)}
 							startFrom={fps} // If the video is 30fps, then it will start at 2s
 							endAt={fps * 6} // If the video is 30fps, then it will end at 4s
 							volume={0}
@@ -100,50 +108,66 @@ export const ZebraCat: React.FC<Props> = (props) => {
 			/>
 			<AbsoluteFill style={{zIndex: 2}}>
 				<Sequence from={fps} durationInFrames={fps * 6}>
-					<Logo />
-				</Sequence>
-				<Sequence from={fps} durationInFrames={fps * 6}>
 					<Text
 						titleText={props.text.start_text[0]}
+						titleFont={props.main_font[0]}
 						titleColor={props.color[2]}
+						justifyContent="center"
 					/>
 				</Sequence>
 				<Sequence from={fps * 7} durationInFrames={fps * 6}>
 					<Text
 						titleText={props.text.middle_text[0].main}
+						titleFont={props.main_font[0]}
+						titleColor={props.color[3]}
 						subtitleText={props.text.middle_text[0].secondary}
-						titleColor={props.color[2]}
+						subtitleFont={props.secondary_font[0]}
+						subtitleColor={props.color[2]}
+						justifyContent="center"
 					/>
 				</Sequence>
 				<Sequence from={fps * 13} durationInFrames={fps * 6}>
 					<Text
 						titleText={props.text.middle_text[1].main}
-						subtitleText={props.text.middle_text[1].secondary}
+						titleFont={props.main_font[0]}
 						titleColor={props.color[2]}
+						subtitleText={props.text.middle_text[1].secondary}
+						subtitleFont={props.secondary_font[0]}
+						subtitleColor={props.color[3]}
+						justifyContent="space-evenly"
 					/>
 				</Sequence>
 				<Sequence from={fps * 19} durationInFrames={fps * 6}>
 					<Text
 						titleText={props.text.middle_text[2].main}
+						titleFont={props.main_font[0]}
+						titleColor={props.color[3]}
 						subtitleText={props.text.middle_text[2].secondary}
-						titleColor={props.color[2]}
+						subtitleFont={props.secondary_font[0]}
+						subtitleColor={props.color[2]}
+						justifyContent="space-around"
 					/>
-				</Sequence>
-				<Sequence from={fps * 25} durationInFrames={fps * 6}>
-					<Logo />
 				</Sequence>
 				<Sequence from={fps * 25} durationInFrames={fps * 6}>
 					<Text
 						titleText={props.text.end_text[0]}
 						titleColor={props.color[2]}
+						titleFont={props.main_font[0]}
+						justifyContent="flex-end"
 					/>
 				</Sequence>
 			</AbsoluteFill>
 			<AbsoluteFill
-				style={{backgroundColor: props.color[0], opacity: opacity3, zIndex: 3}}
+				style={{
+					backgroundColor: props.color[1],
+					opacity: opacity3,
+					zIndex: 3,
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}
 			>
 				<Logo />
-				<h2 style={{color: props.color[1]}}>ZebraCat</h2>
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);
